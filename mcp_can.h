@@ -29,84 +29,72 @@
 class MCP_CAN
 {
     private:
-    
-    INT8U   m_nExtFlg;                                                  /* identifier xxxID             */
+    uint8   m_nExtFlg;                                                  /* identifier xxxID             */
                                                                         /* either extended (the 29 LSB) */
                                                                         /* or standard (the 11 LSB)     */
-    INT32U  m_nID;                                                      /* can id                       */
-    INT8U   m_nDlc;                                                     /* data length:                 */
-    INT8U   m_nDta[MAX_CHAR_IN_MESSAGE];                            	/* data                         */
-    INT8U   m_nRtr;                                                     /* rtr                          */
-    INT8U   m_nfilhit;
-    INT8U   SPICS;
+    uint32  m_nID;                                                      /* can id                       */
+    uint8   m_nDlc;                                                     /* data length:                 */
+    uint8   m_nDta[MAX_CHAR_IN_MESSAGE];                            	/* data                         */
+    uint8   m_nRtr;                                                     /* rtr                          */
+    uint8   m_nfilhit;
+    uint8   SPICS;
 
-/*
-*  mcp2515 driver function 
-*/
-   // private:
    private:
 
     void mcp2515_reset(void);                                           /* reset mcp2515                */
 
-    INT8U mcp2515_readRegister(const INT8U address);                    /* read mcp2515's register      */
+    uint8 mcp2515_readRegister(const uint8 address);                    /* read mcp2515's register      */
     
-    void mcp2515_readRegisterS(const INT8U address, 
-	                       INT8U values[], 
-                               const INT8U n);
-    void mcp2515_setRegister(const INT8U address,                       /* set mcp2515's register       */
-                             const INT8U value);
+    void mcp2515_readRegisterS(const uint8 address, 
+	                       uint8 values[], 
+                               const uint8 n);
+    void mcp2515_setRegister(const uint8 address,                       /* set mcp2515's register       */
+                             const uint8 value);
 
-    void mcp2515_setRegisterS(const INT8U address,                      /* set mcp2515's registers      */
-                              const INT8U values[],
-                              const INT8U n);
+    void mcp2515_setRegisterS(const uint8 address,                      /* set mcp2515's registers      */
+                              const uint8 values[],
+                              const uint8 n);
     
     void mcp2515_initCANBuffers(void);
     
-    void mcp2515_modifyRegister(const INT8U address,                    /* set bit of one register      */
-                                const INT8U mask,
-                                const INT8U data);
+    void mcp2515_modifyRegister(const uint8 address,                    /* set bit of one register      */
+                                const uint8 mask,
+                                const uint8 data);
 
-    INT8U mcp2515_readStatus(void);                                     /* read mcp2515's Status        */
-    INT8U mcp2515_setCANCTRL_Mode(const INT8U newmode);                 /* set mode                     */
-    INT8U mcp2515_configRate(const INT8U canSpeed);                     /* set boadrate                 */
-    INT8U mcp2515_init(const INT8U canSpeed);                           /* mcp2515init                  */
+    uint8 mcp2515_readStatus(void);                                     /* read mcp2515's Status        */
+    uint8 mcp2515_setCANCTRL_Mode(const uint8 newmode);                 /* set mode                     */
+    uint8 mcp2515_configRate(const uint8 canSpeed);                     /* set boadrate                 */
+    uint8 mcp2515_init(const uint8 canSpeed);                           /* mcp2515init                  */
 
-    void mcp2515_write_id( const INT8U mcp_addr,                        /* write can id                 */
-                               const INT8U ext,
-                               const INT32U id );
+    void mcp2515_write_id( const uint8 mcp_addr,                        /* write can id                 */
+                               const uint8 ext,
+                               const uint32 id );
 
-    void mcp2515_read_id( const INT8U mcp_addr,                        /* read can id                  */
-                                    INT8U* ext,
-                                    INT32U* id );
+    void mcp2515_read_id( const uint8 mcp_addr,                        /* read can id                  */
+                                    uint8* ext,
+                                    uint32* id );
 
-    void mcp2515_write_canMsg( const INT8U buffer_sidh_addr );          /* write can msg                */
-    void mcp2515_read_canMsg( const INT8U buffer_sidh_addr);            /* read can msg                 */
-    void mcp2515_start_transmit(const INT8U mcp_addr);                  /* start transmit               */
-    INT8U mcp2515_getNextFreeTXBuf(INT8U *txbuf_n);                     /* get Next free txbuf          */
+    void mcp2515_write_canMsg( const uint8 buffer_sidh_addr );          /* write can msg                */
+    void mcp2515_read_canMsg( const uint8 buffer_sidh_addr);            /* read can msg                 */
+    void mcp2515_start_transmit(const uint8 mcp_addr);                  /* start transmit               */
+    uint8 mcp2515_getNextFreeTXBuf(uint8 *txbuf_n);                     /* get Next free txbuf          */
 
-/*
-*  can operator function
-*/    
-
-    INT8U setMsg(INT32U id, INT8U ext, INT8U len, INT8U *pData);    /* set message                  */  
-    INT8U clearMsg();                                               /* clear all message to zero    */
-    INT8U readMsg();                                                /* read message                 */
-    INT8U sendMsg();                                                /* send message                 */
+    uint8 setMsg(uint32 id, uint8 ext, uint8 len, uint8 *pData);    /* set message                  */  
+    uint8 clearMsg();                                               /* clear all message to zero    */
+    uint8 readMsg();                                                /* read message                 */
+    uint8 sendMsg();                                                /* send message                 */
 
 public:
-    MCP_CAN(INT8U _CS);
-    INT8U begin(INT8U speedset);                              /* init can                     */
-    INT8U init_Mask(INT8U num, INT8U ext, INT32U ulData);           /* init Masks                   */
-    INT8U init_Filt(INT8U num, INT8U ext, INT32U ulData);           /* init filters                 */
-    INT8U sendMsgBuf(INT32U id, INT8U ext, INT8U len, INT8U *buf);  /* send buf                     */
-    INT8U readMsgBuf(INT8U *len, INT8U *buf);                       /* read buf                     */
-    INT8U checkReceive(void);                                       /* if something received        */
-    INT8U checkError(void);                                         /* if something error           */
-    INT32U getCanId(void);                                          /* get can id when receive      */
+    MCP_CAN(uint8 _CS);
+    uint8 begin(uint8 speedset);                              /* init can                     */
+    uint8 init_Mask(uint8 num, uint8 ext, uint32 ulData);           /* init Masks                   */
+    uint8 init_Filt(uint8 num, uint8 ext, uint32 ulData);           /* init filters                 */
+    uint8 sendMsgBuf(uint32 id, uint8 ext, uint8 len, uint8 *buf);  /* send buf                     */
+    uint8 readMsgBuf(uint8 *len, uint8 *buf);                       /* read buf                     */
+    uint8 checkReceive(void);                                       /* if something received        */
+    uint8 checkError(void);                                         /* if something error           */
+    uint32 getCanId(void);                                          /* get can id when receive      */
 };
 
 extern MCP_CAN CAN;
 #endif
-/*********************************************************************************************************
-  END FILE
-*********************************************************************************************************/

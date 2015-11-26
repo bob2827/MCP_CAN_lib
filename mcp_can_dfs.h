@@ -27,15 +27,14 @@
 #include <SPI.h>
 #include <inttypes.h>
 
-#ifndef INT32U
-#define INT32U unsigned long
+#ifndef uint32
+#define uint32 unsigned long
 #endif
 
-#ifndef INT8U
-#define INT8U byte
+#ifndef uint8
+#define uint8 byte
 #endif
 
-// if print debug information
 #define DEBUG_MODE 0
 
 /*
@@ -361,6 +360,3 @@
 #define CAN_MAX_CHAR_IN_MESSAGE (8)
 
 #endif
-/*********************************************************************************************************
-  END FILE
-*********************************************************************************************************/
